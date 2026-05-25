@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 
 function ProtectedRoute( {children}) {
     const location = useLocation(); // записываем, откуда пришел пользователь
-    const currentUser = useAuth();
+    const { currentUser } = useAuth();
     // ЕСЛИ не АВТОРИЗОВАН
     if (!currentUser) {
         // state - сохраняет текущий адрес чтобы после логина вернуть юзера назад

@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 // контекст - это "коробка" в которой будут лежать данные об авторизации
 const AuthContext = createContext(null);
 
-function AuthProvider() {
+export function AuthProvider({children}) {
     // для хранения текущего вошедшего пользователя
     const [currentUser, setCurrentUser] = useState(()=>{
         const savedUser = localStorage.getItem('active_user');
@@ -38,12 +38,15 @@ function AuthProvider() {
         localStorage.removeItem('active_user');
     };
 
-    // добавить проброс
+    return (
+        <AuthContext.Provider value={{ currentUser, login, register, logout }}>
+            {children}
+        </AuthContext.Provider>
+    );
 }
 
+
 // создаем собственный хук для удобного использования контекста в других компонентах
-function useAuth() {
+export function useAuth() {
     return useContext(AuthContext);
 };
-
-export default useAuth;
