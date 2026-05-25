@@ -25,8 +25,11 @@ export function AuthProvider({children}) {
     const login = (username, password) => {
         const users = JSON.parse(localStorage.getItem('users') || '[]');
         const user = users.find (u => u.username === username && u.password === password);
-        if (!user) {
-            return {success: false, message: 'Неверное имя поользователя или пароль'};
+        // if (!user) {
+        //     return {success: false, message: 'Неверное имя поользователя или пароль'};
+        // }
+        if (username !== user?.username || password !== user?.password) {
+            return {success: false, message: 'Неверное имя пользователя или пароль'};
         }
         setCurrentUser(user);
         localStorage.setItem('active_user', JSON.stringify(user));
