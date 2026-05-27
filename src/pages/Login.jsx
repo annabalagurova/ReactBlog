@@ -10,6 +10,7 @@ function Login() {
     const { login } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+    // console.log(error);
 
     // если шел в кабинет - после авторизации вернем в кабинет
     // если зашел на логин сам - перенаправим на /news

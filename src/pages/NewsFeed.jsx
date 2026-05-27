@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 // http:localhost/news?search=react&category=frontend
+import { useAuth } from "../context/AuthContext";
+
 
 const ARTICLES_DATA = [
     {
@@ -30,6 +32,9 @@ const ARTICLES_DATA = [
 ];
 
 function NewsFeed () {
+
+    const { currentUser } = useAuth();
+    
     const [articles, setArticles] = useState([]);
 
     useEffect(() => {
@@ -70,7 +75,7 @@ function NewsFeed () {
     };
 
     // фильтрация на основе полученных значений
-    const filtersdArticles = ARTICLES_DATA.filter((article) => {
+    const filtersdArticles = articles.filter((article) => {
         // в нижнем регистре в описании или названии
         const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase()) || article.description.toLowerCase().includes(searchQuery.toLowerCase())
 
@@ -85,6 +90,13 @@ function NewsFeed () {
     return (
         <>
             <h1>Лента свежих новостей</h1>
+            {/* КНОПКА ДОБАВЛЕНИЯ ЕСЛИ ПОЛЬЗОВАТЕЛЬ АВТОРИЗОВАН */}
+            { currentUser && (
+                <Link to='/dashboard/create-article'> 
+                    + Создать статью
+                </Link>
+            )}
+
             {/* БЛОК ФИЛЬТРОВ И ПОИСКА */}
             <div style={{
                 display: 'flex',
@@ -126,10 +138,16 @@ function NewsFeed () {
                 {filtersdArticles.length > 0 ? (
                     filtersdArticles.map((article) => (
                         <article key={article.id}>
+                            <span>{article.authorName}</span>
                             <h2>{article.title}</h2>
                             <h2>{article.description}</h2>
                             <span>{article.category.toUpperCase()}</span>
                             <Link to={`/news${article.id}`}>Читать полностью</Link>
+                            { currentUser && currentUser.id === article.authorId && (
+                                <Link to={`/dashboard/edit-article/${article.id}`}>
+                                    Редактировать
+                                </Link>
+                            )}
                         </article>
                     ))
                 ) : (

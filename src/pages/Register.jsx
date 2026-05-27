@@ -44,6 +44,7 @@ function Register() {
         <div style={{ maxWidth:'400px', margin: '50px auto' }}>
             <h2>Регистрация нового пользователя</h2>
             {error && <p style={{ color: 'green' }}>{error}</p>}
+            {succes && <p style={{ color: 'green' }}>{succes}</p>}
             <form onSubmit={handleSubmit}>
                 <input type="text" placeholder="имя пользователя" 
                     value={username}
